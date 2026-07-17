@@ -21,6 +21,8 @@ public class SecondTest {
         System.out.println("getGrade для 101: " + getGrade(101));
         System.out.println("blastOff для 5: " + blastOff(5));
         System.out.println("blastOff для 2: " + blastOff(2));
+        System.out.println("sumToN для 2: " + sumToN(2));
+        System.out.println("sumToN для 10: " + sumToN(10));
 
     }
 
@@ -91,6 +93,21 @@ public class SecondTest {
         }
         return rez + "Поехали!";
     }
+
+/*
+Задача 6: разработать метод с сигнатурой publiс static int sumToN(int n).
+Метод возвращает сумму всех целых чисел от 1 до n.
+ */
+    public static int sumToN(int n){
+        int rez = 0;
+        for (int i = 1; i <= n; i++) {
+            rez = rez + i;
+
+    }
+        return rez;
+    }
+
+
 
 
 }
