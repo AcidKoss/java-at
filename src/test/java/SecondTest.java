@@ -4,7 +4,7 @@ public class SecondTest {
 
 
     @Test
-    public void test(){
+    public void test() {
 
         System.out.println("isEven для 5: " + isEven(5));
         System.out.println("isEven для 6: " + isEven(6));
@@ -12,14 +12,21 @@ public class SecondTest {
         System.out.println("checkAccess для 18: " + checkAccess(18));
         System.out.println("isPositive для 1: " + isPositive(1));
         System.out.println("isPositive для -1: " + isPositive(-1));
+        System.out.println("getGrade для -1: " + getGrade(-1));
+        System.out.println("getGrade для 11: " + getGrade(11));
+        System.out.println("getGrade для 24: " + getGrade(24));
+        System.out.println("getGrade для 46: " + getGrade(46));
+        System.out.println("getGrade для 67: " + getGrade(67));
+        System.out.println("getGrade для 94: " + getGrade(94));
+        System.out.println("getGrade для 101: " + getGrade(101));
 
     }
 
-/*
-Задача 1: разработать метод с сигнатурой publiс static boolean isEven(int n).
-Метод возвращает true, если число чётное, и false — если нечётное.
- */
-    public static boolean isEven(int n){
+    /*
+    Задача 1: разработать метод с сигнатурой publiс static boolean isEven(int n).
+    Метод возвращает true, если число чётное, и false — если нечётное.
+     */
+    public static boolean isEven(int n) {
         return !(n % 2 > 0);
     }
 
@@ -28,7 +35,7 @@ public class SecondTest {
 Метод возвращает Allowed, если число строго больше 18, и Denied — если меньше.
  */
 
-    public static String checkAccess(int age){
+    public static String checkAccess(int age) {
         return (age > 18) ? "Allowed" : "Denied";
     }
 
@@ -39,10 +46,35 @@ public class SecondTest {
 с помощью тернарного оператора.
  */
 
-    public static boolean isPositive(int n){
+    public static boolean isPositive(int n) {
         return n > 0 ? true : false;
     }
 
+    /*
+Задача 4: разработать метод с сигнатурой public static String getGrade(int score).
+Метод возвращает строку, соответствующую строгому вхождению в границы:
+0–20: E;
+21–40: D;
+41–60: C;
+61–80: B;
+81–100: A.
+Если переданное число не входит в границы — вернуть строку Error.
+ */
+
+    public static String getGrade(int score) {
+
+        if (score >= 0 && score <= 20)
+            return "E";
+        else if (score >= 21 && score <= 40)
+            return "D";
+        else if (score >= 41 && score <= 60)
+            return "C";
+        else if (score >= 61 && score <= 80)
+            return "B";
+        else if (score >= 80 && score <= 100)
+            return "A";
+        return "Error";
+    }
 
 }
 
