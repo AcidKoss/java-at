@@ -15,7 +15,7 @@ public class SecondTest {
 Метод возвращает true, если число чётное, и false — если нечётное.
  */
     public static boolean isEven(int n){
-        return n % 2 < 1;
+        return !(n % 2 > 0);
     }
 
 }
