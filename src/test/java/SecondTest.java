@@ -18,6 +18,14 @@ public class SecondTest {
         return !(n % 2 > 0);
     }
 
+    /*
+Задача 2: разработать метод с сигнатурой public static String checkAccess(int age).
+Метод возвращает Allowed, если число строго больше 18, и Denied — если меньше.
+ */
+
+    public static String checkAccess(int age){
+        return "";
+    }
 }
 
 
