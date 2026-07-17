@@ -10,6 +10,9 @@ public class SecondTest {
         System.out.println("isEven для 6: " + isEven(6));
         System.out.println("checkAccess для 19: " + checkAccess(19));
         System.out.println("checkAccess для 18: " + checkAccess(18));
+        System.out.println("isPositive для 1: " + isPositive(1));
+        System.out.println("isPositive для -1: " + isPositive(-1));
+
     }
 
 /*
@@ -28,6 +31,19 @@ public class SecondTest {
     public static String checkAccess(int age){
         return (age > 18) ? "Allowed" : "Denied";
     }
+
+    /*
+Задача 3: разработать метод с сигнатурой public static boolean isPositive(int n).
+Метод должен возвращать true, если переданное число больше или равно нулю, и false,
+если переданное число меньше нуля. Проверка внутри метода должна происходить
+с помощью тернарного оператора.
+ */
+
+    public static boolean isPositive(int n){
+        return n > 0 ? true : false;
+    }
+
+
 }
 
 
