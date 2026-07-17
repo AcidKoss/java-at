@@ -8,6 +8,8 @@ public class SecondTest {
 
         System.out.println("isEven для 5: " + isEven(5));
         System.out.println("isEven для 6: " + isEven(6));
+        System.out.println("checkAccess для 19: " + checkAccess(19));
+        System.out.println("checkAccess для 18: " + checkAccess(18));
     }
 
 /*
@@ -24,7 +26,7 @@ public class SecondTest {
  */
 
     public static String checkAccess(int age){
-        return "";
+        return (age > 18) ? "Allowed" : "Denied";
     }
 }
 
