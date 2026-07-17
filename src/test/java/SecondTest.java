@@ -19,6 +19,8 @@ public class SecondTest {
         System.out.println("getGrade для 67: " + getGrade(67));
         System.out.println("getGrade для 94: " + getGrade(94));
         System.out.println("getGrade для 101: " + getGrade(101));
+        System.out.println("blastOff для 5: " + blastOff(5));
+        System.out.println("blastOff для 2: " + blastOff(2));
 
     }
 
@@ -75,6 +77,21 @@ public class SecondTest {
             return "A";
         return "Error";
     }
+
+     /*
+Задача 5: разработать метод с сигнатурой public static String blastOff(int start).
+Метод принимает стартовое число (например, 5) и возвращает строку со всеми числами до 1
+и словом «Поехали!» в конце (например, «5 4 3 2 1 Поехали!»).
+ */
+
+    public static String blastOff(int start){
+        String rez = "";
+        for (int i = start; i > 0; i--) {
+            rez = rez + i + " ";
+        }
+        return rez + "Поехали!";
+    }
+
 
 }
 
