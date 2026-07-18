@@ -1,5 +1,9 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class SecondTest {
 
 
@@ -23,6 +27,13 @@ public class SecondTest {
         System.out.println("blastOff для 2: " + blastOff(2));
         System.out.println("sumToN для 2: " + sumToN(2));
         System.out.println("sumToN для 10: " + sumToN(10));
+        System.out.println("hasBug для случая нет bug: " + hasBug(new String[]{"Hello", "Кот", "World"}));
+        System.out.println("hasBug для случая есть bug: " + hasBug(new String[]{"Hello", "BUG", "World"}));
+        System.out.println("getEvenInRange: " + getEvenInRange(1, 9));
+        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7,5,10,-45,41,-32,1}));
+        System.out.println("reverse: " + Arrays.toString(reverse(new String[]{"Zero", "One", "Two"})));
+        System.out.println("calcAverage 4, 12, 73, 52, 13: " + calcAverage(List.of(4, 12, 73, 52, 13)));
+        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"),"BUG"));
 
     }
 
@@ -86,76 +97,112 @@ public class SecondTest {
 и словом «Поехали!» в конце (например, «5 4 3 2 1 Поехали!»).
  */
 
-    public static String blastOff(int start){
-        String rez = "";
+    public static String blastOff(int start) {
+        String result = "";
         for (int i = start; i > 0; i--) {
-            rez = rez + i + " ";
+            result = result + i + " ";
         }
-        return rez + "Поехали!";
+        return result + "Поехали!";
     }
 
-/*
-Задача 6: разработать метод с сигнатурой publiс static int sumToN(int n).
-Метод возвращает сумму всех целых чисел от 1 до n.
- */
-    public static int sumToN(int n){
-        int rez = 0;
+    /*
+    Задача 6: разработать метод с сигнатурой publiс static int sumToN(int n).
+    Метод возвращает сумму всех целых чисел от 1 до n.
+     */
+    public static int sumToN(int n) {
+        int result = 0;
         for (int i = 1; i <= n; i++) {
-            rez = rez + i;
+            result = result + i;
 
+        }
+        return result;
     }
-        return rez;
-    }
-
-
-
-
-}
-
 
 /*
-Задача 1: разработать метод с сигнатурой publiс static boolean isEven(int n).
-Метод возвращает true, если число чётное, и false — если нечётное.
+Задача 7: разработать метод с сигнатурой public static boolean hasBug(String[] messages).
+Метод принимает массив строк и возвращает true, если хотя бы одна строка в массиве равна Bug.
+Сравнение можно выполнять без учёта регистра.
+ */
 
-Задача 2: разработать метод с сигнатурой public static String checkAccess(int age).
-Метод возвращает Allowed, если число строго больше 18, и Denied — если меньше.
+    public static boolean hasBug(String[] messages) {
+        for (String message : messages) {
+            if (message.equalsIgnoreCase("bug"))
+                return true;
 
-Задача 3: разработать метод с сигнатурой public static boolean isPositive(int n).
-Метод должен возвращать true, если переданное число больше или равно нулю, и false, если переданное число меньше нуля. Проверка внутри метода должна происходить с помощью тернарного оператора.
+        }
+        return false;
+    }
 
-Задача 4: разработать метод с сигнатурой public static String getGrade(int score).
-Метод возвращает строку, соответствующую строгому вхождению в границы:
-
-0–20: E;
-21–40: D;
-41–60: C;
-61–80: B;
-81–100: A.
-Если переданное число не входит в границы — вернуть строку Error.
-
-Задача 5: разработать метод с сигнатурой public static String blastOff(int start).
-Метод принимает стартовое число (например, 5) и возвращает строку со всеми числами до 1 и словом «Поехали!» в конце (например, «5 4 3 2 1 Поехали!»).
-
-Задача 6: разработать метод с сигнатурой publiс static int sumToN(int n).
-Метод возвращает сумму всех целых чисел от 1 до n.
-
-Задача 7: разработать метод с сигнатурой publiс static boolean hasBug(String[] messages).
-Метод принимает массив строк и возвращает true, если хотя бы одна строка в массиве равна Bug. Сравнение можно выполнять без учёта регистра.
-
+    /*
 Задача 8: разработать метод с сигнатурой publiс static getEvenInRange(int start, int end).
-Метод принимает границы диапазона и возвращает строку, состоящую только из чётных чисел внутри этого промежутка (включая границы), разделённых пробелом. Перед первым и после последнего числа пробел не ставится. Например: (2, 5) -> “2 4”
+Метод принимает границы диапазона и возвращает строку, состоящую только из
+чётных чисел внутри этого промежутка (включая границы), разделённых пробелом.
+Перед первым и после последнего числа пробел не ставится. Например: (2, 5) -> “2 4”
+ */
 
+    public static String getEvenInRange(int start, int end) {
+        String result = "";
+        for (int i = start; i <= end; i++) {
+            if (i % 2 == 0)
+                result = result + i + " ";
+        }
+        return result;
+    }
+
+    /*
 Задача 9: разработать метод с сигнатурой publiс static public int findMax(int[] arr).
 Метод находит и возвращает самое большое число в переданном массиве.
+ */
 
+    public static int findMax(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        for (int i : arr) {
+            if (i > max)
+                max = i;
+
+        }
+        return max;
+    }
+
+/*
 Задача 10: разработать метод с сигнатурой publiс static String[] reverse(String[] arr).
-Метод возвращает новый массив, в котором элементы исходного массива расположены в обратном порядке. Например, {“One”, “Two”, “Zero”} -> {“Zero”, “Two”, “One}.
+Метод возвращает новый массив, в котором элементы исходного массива расположены в обратном порядке.
+Например, {“One”, “Two”, “Zero”} -> {“Zero”, “Two”, “One}.
+ */
 
+    public static String[] reverse(String[] arr){
+        String[] reverse = new String[arr.length];
+        int reverseIndex = 0;
+        for (int i = arr.length-1; i >= 0; i--) {
+            reverse[reverseIndex] = arr[i];
+            reverseIndex++;
+        }
+        return reverse;
+    }
+
+/*
 Задача 11: разработать метод с сигнатурой publiс static calcAverage(List<Integer> list).
 Метод вычисляет и возвращает среднее арифметическое всех чисел в списке.
+ */
 
+    public static double calcAverage(List<Integer> list){
+        int sum = 0;
+        for (int element : list)
+            sum = sum+element;
+        return (double) sum /list.size();
+    }
+
+    /*
 Задача 12: разработать метод с сигнатурой
 publiс static List<String> removeSpecificName(List<String> list, String nameToRemove).
 Метод принимает список и имя, которое нужно исключить. Возвращает новый список,
 не содержащий указанного имени.
  */
+
+    public static List<String> removeSpecificName(List<String> list, String nameToRemove){
+        List<String> newList = new ArrayList<>(list);
+        newList.remove(nameToRemove);
+        return newList;
+    }
+}
+
