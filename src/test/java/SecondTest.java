@@ -1,13 +1,29 @@
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class SecondTest {
 
+    @BeforeEach
+    public void first(){
+        System.out.println("========================Test method start");
+    }
+
+    @AfterEach
+    public void last(){
+        System.out.println("Test method end\n" +
+                "\n" +
+                "========================");
+    }
 
     @Test
+    @Disabled
     public void test() {
 
         System.out.println("isEven для 5: " + isEven(5));
@@ -30,12 +46,49 @@ public class SecondTest {
         System.out.println("hasBug для случая нет bug: " + hasBug(new String[]{"Hello", "Кот", "World"}));
         System.out.println("hasBug для случая есть bug: " + hasBug(new String[]{"Hello", "BUG", "World"}));
         System.out.println("getEvenInRange: " + getEvenInRange(1, 9));
-        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7,5,10,-45,41,-32,1}));
+        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7, 5, 10, -45, 41, -32, 1}));
         System.out.println("reverse: " + Arrays.toString(reverse(new String[]{"Zero", "One", "Two"})));
         System.out.println("calcAverage 4, 12, 73, 52, 13: " + calcAverage(List.of(4, 12, 73, 52, 13)));
-        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"),"BUG"));
+        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"), "BUG"));
 
     }
+
+
+    @Test
+    @Tag("Test")
+    public void isEvenTest() {
+        Random random = new Random();
+        int number = random.nextInt(1, 101);
+        System.out.println("isEven с числом " + number + ": " + isEven(number));
+    }
+
+    @Test
+    @Tag("Test")
+    public void checkAccessTest() {
+        Random random = new Random();
+        for (int i = 1; i <= 20; i++) {
+            int number = random.nextInt(1, 100);
+            System.out.println(i +"-ый запуск checkAccess с числом " + number + ": " + checkAccess(number));
+        }
+    }
+
+    static int[] numbers() {
+        int[] arr = new int[10];
+        Random random = new Random();
+        for (int i = 0; i <= arr.length-1; i++) {
+            arr[i] = random.nextInt(1, 101);
+        }
+        return arr;
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("numbers")
+    @Tag("Test")
+    public void getGradeTest(int number) {
+            System.out.println("запуск getGrade с числом " + number + ": " + getGrade(number));
+    }
+
 
     /*
     Задача 1: разработать метод с сигнатурой publiс static boolean isEven(int n).
@@ -170,10 +223,10 @@ public class SecondTest {
 Например, {“One”, “Two”, “Zero”} -> {“Zero”, “Two”, “One}.
  */
 
-    public static String[] reverse(String[] arr){
+    public static String[] reverse(String[] arr) {
         String[] reverse = new String[arr.length];
         int reverseIndex = 0;
-        for (int i = arr.length-1; i >= 0; i--) {
+        for (int i = arr.length - 1; i >= 0; i--) {
             reverse[reverseIndex] = arr[i];
             reverseIndex++;
         }
@@ -185,11 +238,11 @@ public class SecondTest {
 Метод вычисляет и возвращает среднее арифметическое всех чисел в списке.
  */
 
-    public static double calcAverage(List<Integer> list){
+    public static double calcAverage(List<Integer> list) {
         int sum = 0;
         for (int element : list)
-            sum = sum+element;
-        return (double) sum /list.size();
+            sum = sum + element;
+        return (double) sum / list.size();
     }
 
     /*
@@ -199,7 +252,7 @@ publiс static List<String> removeSpecificName(List<String> list, String nameToR
 не содержащий указанного имени.
  */
 
-    public static List<String> removeSpecificName(List<String> list, String nameToRemove){
+    public static List<String> removeSpecificName(List<String> list, String nameToRemove) {
         List<String> newList = new ArrayList<>(list);
         newList.remove(nameToRemove);
         return newList;
