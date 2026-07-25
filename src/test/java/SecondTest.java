@@ -10,13 +10,17 @@ import java.util.Random;
 
 public class SecondTest {
 
+    static final Random random = new Random();
+
     @BeforeEach
-    public void first(){
-        System.out.println("========================Test method start");
+    public void first() {
+        System.out.println("========================\n" +
+                "\n" +
+                "Test method start");
     }
 
     @AfterEach
-    public void last(){
+    public void last() {
         System.out.println("Test method end\n" +
                 "\n" +
                 "========================");
@@ -53,42 +57,157 @@ public class SecondTest {
 
     }
 
-
+    /*
+        Задание 1
+         */
     @Test
     @Tag("Test")
-    public void isEvenTest() {
-        Random random = new Random();
+    public void isEvenOldTest() {
+
         int number = random.nextInt(1, 101);
         System.out.println("isEven с числом " + number + ": " + isEven(number));
     }
 
     @Test
     @Tag("Test")
-    public void checkAccessTest() {
-        Random random = new Random();
+    public void checkAccessOldTest() {
         for (int i = 1; i <= 20; i++) {
             int number = random.nextInt(1, 100);
-            System.out.println(i +"-ый запуск checkAccess с числом " + number + ": " + checkAccess(number));
+            System.out.println(i + "-ый запуск checkAccess с числом " + number + ": " + checkAccess(number));
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("numbers")
+    @Tag("Test")
+    public void getGradeOldTest(int number) {
+        System.out.println("запуск getGrade с числом " + number + ": " + getGrade(number));
+    }
+
+
+    /*
+        Задание 2
+         */
+
+    @Test
+    @Tag("Test")
+    public void isEvenTest() {
+        int num = randomNumber_1_100();
+        System.out.println("Проверка на четность числа: " + num);
+        if (isEven(num)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void checkAccessTest() {
+        int num = randomNumber_1_100();
+        System.out.println("Проверка чисел на больше 18: " + num);
+        if (checkAccess(num).equals("Allowed")) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void isPositiveTest() {
+        int num = randomNumber_minus100_100();
+        System.out.println("Проверка чисел на больше или равно 0: " + num);
+        if (isPositive(num)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void getGradeTest() {
+        int num = randomNumber_minus100_100();
+        System.out.println("Проверка грейда в зависимости от числа: " + num);
+        switch (getGrade(num)) {
+            case "A","B","C","D","E" -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void blastOffTest() {
+        int num = random.nextInt(0,10);
+        System.out.println("Проверка вывода строчки 5 4 3 2 1 Поехали!: " + num);
+        switch (blastOff(num)) {
+            case "5 4 3 2 1 Поехали!","4 3 2 1 Поехали!","3 2 1 Поехали!","2 1 Поехали!","1 Поехали!" -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void sumToNTest() {
+        int num = random.nextInt(1,10);
+        System.out.println("Проверка метода возврата суммы всех целых чисел для 1,2,3,4,5: " + num);
+        switch (sumToN(num)) {
+            case 1,3,6,10,15 -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void hasBugTest() {
+        String[] arr = randomString();
+        System.out.println("Проверка наличия bug в массиве " + Arrays.toString(arr));
+        if (hasBug(arr)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+
+    /*
+    Вспомогательный метод для создания рандомного массива
+     */
     static int[] numbers() {
         int[] arr = new int[10];
-        Random random = new Random();
-        for (int i = 0; i <= arr.length-1; i++) {
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(1, 101);
         }
         return arr;
     }
 
-
-    @ParameterizedTest
-    @MethodSource("numbers")
-    @Tag("Test")
-    public void getGradeTest(int number) {
-            System.out.println("запуск getGrade с числом " + number + ": " + getGrade(number));
+    /*
+    Вспомогательный метод для создания рандомного числа от 1 до 100
+     */
+    static int randomNumber_1_100() {
+        return random.nextInt(1, 101);
     }
 
+    /*
+    Вспомогательный метод для создания рандомного числа от -100 до 100
+     */
+    static int randomNumber_minus100_100() {
+        return random.nextInt(-100, 101);
+    }
+
+    /*
+    Вспомогательный метод для возврата рандомной строчки содержащей\не содержащей "bug"
+            */
+    static String[] randomString() {
+        String[] var1 = new String[]{"Hello", "Кот", "World"};
+        String[] var2 = new String[]{"Hello", "BUG", "World"};
+        int num = random.nextInt(1, 3);
+        if (num == 1) {
+            return var1;
+        }
+        return var2;
+    }
 
     /*
     Задача 1: разработать метод с сигнатурой publiс static boolean isEven(int n).
