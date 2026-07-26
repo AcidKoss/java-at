@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -113,8 +112,9 @@ public class SecondTest {
         }
     }
 
-    @Test
+
     @Tag("Test")
+    @RepeatedTest(2)
     public void isPositiveTest() {
         int num = randomNumber_minus100_100();
         System.out.println("Проверка чисел на больше или равно 0: " + num);
@@ -161,7 +161,7 @@ public class SecondTest {
     @Test
     @Tag("Test")
     public void hasBugTest() {
-        String[] arr = randomString();
+        String[] arr = randomStringArr();
         System.out.println("Проверка наличия bug в массиве " + Arrays.toString(arr));
         if (hasBug(arr)) {
             System.out.println("TEST PASSED");
@@ -170,6 +170,66 @@ public class SecondTest {
         }
     }
 
+    @Test
+    @Tag("Test")
+    public void getEvenInRangeTest() {
+        int first = random.nextInt(1,7);
+        int second = first + random.nextInt(2,7);
+        System.out.println("Проверка вывода строки из четных чисел в диапазоне: " + first + " - " + second);
+        if (getEvenInRange(first,second).contains("1") || getEvenInRange(first,second).contains("3")|| getEvenInRange(first,second).contains("5")|| getEvenInRange(first,second).contains("7")|| getEvenInRange(first,second).contains("9")|| getEvenInRange(first,second).contains("11")) {
+            System.out.println("TEST FAILED");
+        } else {
+            System.out.println("TEST PASSED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void findMaxTest() {
+        int[] arr = numbers();
+        System.out.println("Проверка самого большого числа в массиве " + Arrays.toString(arr));
+        if (findMax(arr) == 100) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void reverseTest() {
+        String[] arr = randomStringArr();
+        System.out.println("Проверка перевернутого массива " + Arrays.toString(arr));
+        if (Arrays.equals(reverse(arr), new String[]{"World", "Кот", "Hello"})) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void calcAverageTest() {
+        List<Integer> arr = randomIntList();
+        System.out.println("Проверка средне арифметического " + arr);
+        if (calcAverage(arr) == 10) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void removeSpecificNameTest() {
+        List<String> arr = randomStringList();
+        System.out.println("Проверка удаление слова BUG из списка " + arr);
+        if (!removeSpecificName(arr,"BUG").contains("BUG")) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
 
     /*
     Вспомогательный метод для создания рандомного массива
@@ -199,7 +259,7 @@ public class SecondTest {
     /*
     Вспомогательный метод для возврата рандомной строчки содержащей\не содержащей "bug"
             */
-    static String[] randomString() {
+    static String[] randomStringArr() {
         String[] var1 = new String[]{"Hello", "Кот", "World"};
         String[] var2 = new String[]{"Hello", "BUG", "World"};
         int num = random.nextInt(1, 3);
@@ -207,6 +267,28 @@ public class SecondTest {
             return var1;
         }
         return var2;
+    }
+    /*
+        Вспомогательный метод для возврата Листа с рандомными числами"
+                */
+    static List<Integer> randomIntList() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            numbers.add(random.nextInt(1, 101));
+        }
+        return numbers;
+    }
+
+    /*
+        Вспомогательный метод для возврата Листа с рандомными словами + BUG"
+                */
+    static List<String> randomStringList() {
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            stringList.add(String.valueOf(random.nextInt(100, 10000)));
+        }
+        stringList.add(random.nextInt(0, 10),"BUG");
+        return stringList;
     }
 
     /*
