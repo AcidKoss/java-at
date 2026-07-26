@@ -1,13 +1,32 @@
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class SecondTest {
 
+    static final Random random = new Random();
+
+    @BeforeEach
+    public void first() {
+        System.out.println("========================\n" +
+                "\n" +
+                "Test method start");
+    }
+
+    @AfterEach
+    public void last() {
+        System.out.println("Test method end\n" +
+                "\n" +
+                "========================");
+    }
 
     @Test
+    @Disabled
     public void test() {
 
         System.out.println("isEven для 5: " + isEven(5));
@@ -30,11 +49,246 @@ public class SecondTest {
         System.out.println("hasBug для случая нет bug: " + hasBug(new String[]{"Hello", "Кот", "World"}));
         System.out.println("hasBug для случая есть bug: " + hasBug(new String[]{"Hello", "BUG", "World"}));
         System.out.println("getEvenInRange: " + getEvenInRange(1, 9));
-        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7,5,10,-45,41,-32,1}));
+        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7, 5, 10, -45, 41, -32, 1}));
         System.out.println("reverse: " + Arrays.toString(reverse(new String[]{"Zero", "One", "Two"})));
         System.out.println("calcAverage 4, 12, 73, 52, 13: " + calcAverage(List.of(4, 12, 73, 52, 13)));
-        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"),"BUG"));
+        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"), "BUG"));
 
+    }
+
+    /*
+        Задание 1
+         */
+    @Test
+    @Tag("Test")
+    public void isEvenOldTest() {
+
+        int number = random.nextInt(1, 101);
+        System.out.println("isEven с числом " + number + ": " + isEven(number));
+    }
+
+    @Test
+    @Tag("Test")
+    public void checkAccessOldTest() {
+        for (int i = 1; i <= 20; i++) {
+            int number = random.nextInt(1, 100);
+            System.out.println(i + "-ый запуск checkAccess с числом " + number + ": " + checkAccess(number));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("numbers")
+    @Tag("Test")
+    public void getGradeOldTest(int number) {
+        System.out.println("запуск getGrade с числом " + number + ": " + getGrade(number));
+    }
+
+
+    /*
+        Задание 2
+         */
+
+    @Test
+    @Tag("Test")
+    public void isEvenTest() {
+        int num = randomNumber_1_100();
+        System.out.println("Проверка на четность числа: " + num);
+        if (isEven(num)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void checkAccessTest() {
+        int num = randomNumber_1_100();
+        System.out.println("Проверка чисел на больше 18: " + num);
+        if (checkAccess(num).equals("Allowed")) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+
+    @Tag("Test")
+    @RepeatedTest(2)
+    public void isPositiveTest() {
+        int num = randomNumber_minus100_100();
+        System.out.println("Проверка чисел на больше или равно 0: " + num);
+        if (isPositive(num)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void getGradeTest() {
+        int num = randomNumber_minus100_100();
+        System.out.println("Проверка грейда в зависимости от числа: " + num);
+        switch (getGrade(num)) {
+            case "A","B","C","D","E" -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void blastOffTest() {
+        int num = random.nextInt(0,10);
+        System.out.println("Проверка вывода строчки 5 4 3 2 1 Поехали!: " + num);
+        switch (blastOff(num)) {
+            case "5 4 3 2 1 Поехали!","4 3 2 1 Поехали!","3 2 1 Поехали!","2 1 Поехали!","1 Поехали!" -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void sumToNTest() {
+        int num = random.nextInt(1,10);
+        System.out.println("Проверка метода возврата суммы всех целых чисел для 1,2,3,4,5: " + num);
+        switch (sumToN(num)) {
+            case 1,3,6,10,15 -> System.out.println("TEST PASSED");
+            default -> System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void hasBugTest() {
+        String[] arr = randomStringArr();
+        System.out.println("Проверка наличия bug в массиве " + Arrays.toString(arr));
+        if (hasBug(arr)) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void getEvenInRangeTest() {
+        int first = random.nextInt(1,7);
+        int second = first + random.nextInt(2,7);
+        System.out.println("Проверка вывода строки из четных чисел в диапазоне: " + first + " - " + second);
+        if (getEvenInRange(first,second).contains("1") || getEvenInRange(first,second).contains("3")|| getEvenInRange(first,second).contains("5")|| getEvenInRange(first,second).contains("7")|| getEvenInRange(first,second).contains("9")|| getEvenInRange(first,second).contains("11")) {
+            System.out.println("TEST FAILED");
+        } else {
+            System.out.println("TEST PASSED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void findMaxTest() {
+        int[] arr = numbers();
+        System.out.println("Проверка самого большого числа в массиве " + Arrays.toString(arr));
+        if (findMax(arr) == 100) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void reverseTest() {
+        String[] arr = randomStringArr();
+        System.out.println("Проверка перевернутого массива " + Arrays.toString(arr));
+        if (Arrays.equals(reverse(arr), new String[]{"World", "Кот", "Hello"})) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void calcAverageTest() {
+        List<Integer> arr = randomIntList();
+        System.out.println("Проверка средне арифметического " + arr);
+        if (calcAverage(arr) == 10) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    @Test
+    @Tag("Test")
+    public void removeSpecificNameTest() {
+        List<String> arr = randomStringList();
+        System.out.println("Проверка удаление слова BUG из списка " + arr);
+        if (!removeSpecificName(arr,"BUG").contains("BUG")) {
+            System.out.println("TEST PASSED");
+        } else {
+            System.out.println("TEST FAILED");
+        }
+    }
+
+    /*
+    Вспомогательный метод для создания рандомного массива
+     */
+    static int[] numbers() {
+        int[] arr = new int[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt(1, 101);
+        }
+        return arr;
+    }
+
+    /*
+    Вспомогательный метод для создания рандомного числа от 1 до 100
+     */
+    static int randomNumber_1_100() {
+        return random.nextInt(1, 101);
+    }
+
+    /*
+    Вспомогательный метод для создания рандомного числа от -100 до 100
+     */
+    static int randomNumber_minus100_100() {
+        return random.nextInt(-100, 101);
+    }
+
+    /*
+    Вспомогательный метод для возврата рандомной строчки содержащей\не содержащей "bug"
+            */
+    static String[] randomStringArr() {
+        String[] var1 = new String[]{"Hello", "Кот", "World"};
+        String[] var2 = new String[]{"Hello", "BUG", "World"};
+        int num = random.nextInt(1, 3);
+        if (num == 1) {
+            return var1;
+        }
+        return var2;
+    }
+    /*
+        Вспомогательный метод для возврата Листа с рандомными числами"
+                */
+    static List<Integer> randomIntList() {
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            numbers.add(random.nextInt(1, 101));
+        }
+        return numbers;
+    }
+
+    /*
+        Вспомогательный метод для возврата Листа с рандомными словами + BUG"
+                */
+    static List<String> randomStringList() {
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            stringList.add(String.valueOf(random.nextInt(100, 10000)));
+        }
+        stringList.add(random.nextInt(0, 10),"BUG");
+        return stringList;
     }
 
     /*
@@ -170,10 +424,10 @@ public class SecondTest {
 Например, {“One”, “Two”, “Zero”} -> {“Zero”, “Two”, “One}.
  */
 
-    public static String[] reverse(String[] arr){
+    public static String[] reverse(String[] arr) {
         String[] reverse = new String[arr.length];
         int reverseIndex = 0;
-        for (int i = arr.length-1; i >= 0; i--) {
+        for (int i = arr.length - 1; i >= 0; i--) {
             reverse[reverseIndex] = arr[i];
             reverseIndex++;
         }
@@ -185,11 +439,11 @@ public class SecondTest {
 Метод вычисляет и возвращает среднее арифметическое всех чисел в списке.
  */
 
-    public static double calcAverage(List<Integer> list){
+    public static double calcAverage(List<Integer> list) {
         int sum = 0;
         for (int element : list)
-            sum = sum+element;
-        return (double) sum /list.size();
+            sum = sum + element;
+        return (double) sum / list.size();
     }
 
     /*
@@ -199,7 +453,7 @@ publiс static List<String> removeSpecificName(List<String> list, String nameToR
 не содержащий указанного имени.
  */
 
-    public static List<String> removeSpecificName(List<String> list, String nameToRemove){
+    public static List<String> removeSpecificName(List<String> list, String nameToRemove) {
         List<String> newList = new ArrayList<>(list);
         newList.remove(nameToRemove);
         return newList;
