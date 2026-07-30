@@ -163,13 +163,20 @@ public class SecondTest {
     @Test
     @Tag("Test")
     public void findMaxTest() {
-        int[] arr = numbers();
-        System.out.println("Проверка самого большого числа в массиве " + Arrays.toString(arr));
-        if (findMax(arr) == 100) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        int[] arr = new int[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt(1, 101);
         }
+        int expected = Integer.MIN_VALUE;
+
+        for (int candidate: arr){
+            if (candidate > expected)
+                expected = candidate;
+        }
+
+        assertThat(findMax(arr))
+                .as("(Специально сломанный метод, Не верно определилось максимальное число в массиве: " + Arrays.toString(arr))
+                .isEqualTo(expected);
     }
 
     @Test
@@ -187,25 +194,44 @@ public class SecondTest {
     @Test
     @Tag("Test")
     public void calcAverageTest() {
-        List<Integer> arr = randomIntList();
-        System.out.println("Проверка средне арифметического " + arr);
-        if (calcAverage(arr) == 10) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        List<Integer> listNumbers = new ArrayList<>();
+        for (int i = 0; i < random.nextInt(10, 20); i++) {
+            listNumbers.add(random.nextInt(1, 101));
         }
+        int summ = 0;
+        for (int element : listNumbers)
+            summ = summ + element;
+        double expected = (double) summ / listNumbers.size();
+
+
+        assertThat(calcAverage(listNumbers))
+                .as("(Не верно определилось среднеарифметическое число у объекта: " + listNumbers)
+                .isEqualTo(expected);
     }
 
     @Test
     @Tag("Test")
     public void removeSpecificNameTest() {
-        List<String> arr = randomStringList();
-        System.out.println("Проверка удаление слова BUG из списка " + arr);
-        if (!removeSpecificName(arr, "BUG").contains("BUG")) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            stringList.add(String.valueOf(random.nextInt(100, 10000)));
         }
+
+        String randomStr = String.valueOf(random.nextInt(100, 10000));
+
+        stringList.add(random.nextInt(0, 10), randomStr);
+
+        List<String> expected = new ArrayList<>(stringList);
+        for (int i = 0; i < expected.size(); i++) {
+            if(expected.get(i).equals(randomStr))
+                expected.remove(i);
+
+        }
+
+
+        assertThat(removeSpecificName(stringList,randomStr))
+                .as("(Не верно произошло удаление слова: " + randomStr + " из списка: " + stringList)
+                .isEqualTo(expected);
     }
 
     /*
@@ -395,7 +421,7 @@ public class SecondTest {
                 max = i;
 
         }
-        return max;
+        return max+1;
     }
 
 /*
