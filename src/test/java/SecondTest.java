@@ -12,6 +12,7 @@ import java.util.Random;
 public class SecondTest {
 
     static final Random random = new Random();
+    static final int repeatedTest = 10;
 
     @BeforeEach
     public void first() {
@@ -27,8 +28,8 @@ public class SecondTest {
                 "========================");
     }
 
-    @Test
     @Tag("Test")
+    @RepeatedTest(repeatedTest)
     public void isEvenTest() {
         int number = random.nextInt(-100, 101);
         boolean expected = number % 2 == 0;
@@ -37,7 +38,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void checkAccessTest() {
         int number = random.nextInt(-100, 101);
@@ -53,7 +54,7 @@ public class SecondTest {
 
 
     @Tag("Test")
-    @RepeatedTest(2)
+    @RepeatedTest(repeatedTest)
     public void isPositiveTest() {
         int number = random.nextInt(-100, 101);
         boolean expected = number > 0;
@@ -62,7 +63,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void getGradeTest() {
         int number = random.nextInt(-100, 1000);
@@ -84,7 +85,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void blastOffTest() {
         int number = random.nextInt(0, 6);
@@ -107,7 +108,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void sumToNTest() {
         int number = random.nextInt(1, 10);
@@ -122,7 +123,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void hasBugTest() {
         String[] arr = new String[10];
@@ -141,7 +142,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void getEvenInRangeTest() {
         int first = random.nextInt(1, 7);
@@ -160,7 +161,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void findMaxTest() {
         int[] arr = new int[10];
@@ -179,7 +180,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void reverseTest() {
         String[] arr = randomStringArr();
@@ -191,7 +192,7 @@ public class SecondTest {
         }
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void calcAverageTest() {
         List<Integer> listNumbers = new ArrayList<>();
@@ -209,7 +210,7 @@ public class SecondTest {
                 .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void removeSpecificNameTest() {
         List<String> stringList = new ArrayList<>();
@@ -300,7 +301,7 @@ public class SecondTest {
     Метод возвращает true, если число чётное, и false — если нечётное.
      */
     public static boolean isEven(int n) {
-        return !(n % 2 > 0);
+        return n % 2 == 0;
     }
 
     /*
