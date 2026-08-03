@@ -1,3 +1,5 @@
+import static org.assertj.core.api.Assertions.*;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,6 +12,7 @@ import java.util.Random;
 public class SecondTest {
 
     static final Random random = new Random();
+    static final int repeatedTest = 10;
 
     @BeforeEach
     public void first() {
@@ -25,177 +28,159 @@ public class SecondTest {
                 "========================");
     }
 
-    @Test
-    @Disabled
-    public void test() {
-
-        System.out.println("isEven для 5: " + isEven(5));
-        System.out.println("isEven для 6: " + isEven(6));
-        System.out.println("checkAccess для 19: " + checkAccess(19));
-        System.out.println("checkAccess для 18: " + checkAccess(18));
-        System.out.println("isPositive для 1: " + isPositive(1));
-        System.out.println("isPositive для -1: " + isPositive(-1));
-        System.out.println("getGrade для -1: " + getGrade(-1));
-        System.out.println("getGrade для 11: " + getGrade(11));
-        System.out.println("getGrade для 24: " + getGrade(24));
-        System.out.println("getGrade для 46: " + getGrade(46));
-        System.out.println("getGrade для 67: " + getGrade(67));
-        System.out.println("getGrade для 94: " + getGrade(94));
-        System.out.println("getGrade для 101: " + getGrade(101));
-        System.out.println("blastOff для 5: " + blastOff(5));
-        System.out.println("blastOff для 2: " + blastOff(2));
-        System.out.println("sumToN для 2: " + sumToN(2));
-        System.out.println("sumToN для 10: " + sumToN(10));
-        System.out.println("hasBug для случая нет bug: " + hasBug(new String[]{"Hello", "Кот", "World"}));
-        System.out.println("hasBug для случая есть bug: " + hasBug(new String[]{"Hello", "BUG", "World"}));
-        System.out.println("getEvenInRange: " + getEvenInRange(1, 9));
-        System.out.println("findMax -7,5,10,-45,41,-32,1: " + findMax(new int[]{-7, 5, 10, -45, 41, -32, 1}));
-        System.out.println("reverse: " + Arrays.toString(reverse(new String[]{"Zero", "One", "Two"})));
-        System.out.println("calcAverage 4, 12, 73, 52, 13: " + calcAverage(List.of(4, 12, 73, 52, 13)));
-        System.out.println("removeSpecificName - \"Hello\", \"BUG\", \"World\" удалим \"BUG\": " + removeSpecificName(List.of("Hello", "BUG", "World"), "BUG"));
-
-    }
-
-    /*
-        Задание 1
-         */
-    @Test
     @Tag("Test")
-    public void isEvenOldTest() {
-
-        int number = random.nextInt(1, 101);
-        System.out.println("isEven с числом " + number + ": " + isEven(number));
-    }
-
-    @Test
-    @Tag("Test")
-    public void checkAccessOldTest() {
-        for (int i = 1; i <= 20; i++) {
-            int number = random.nextInt(1, 100);
-            System.out.println(i + "-ый запуск checkAccess с числом " + number + ": " + checkAccess(number));
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("numbers")
-    @Tag("Test")
-    public void getGradeOldTest(int number) {
-        System.out.println("запуск getGrade с числом " + number + ": " + getGrade(number));
-    }
-
-
-    /*
-        Задание 2
-         */
-
-    @Test
-    @Tag("Test")
+    @RepeatedTest(repeatedTest)
     public void isEvenTest() {
-        int num = randomNumber_1_100();
-        System.out.println("Проверка на четность числа: " + num);
-        if (isEven(num)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        int number = random.nextInt(-100, 101);
+        boolean expected = number % 2 == 0;
+        assertThat(isEven(number))
+                .as("Не верно определилась четность у числа: " + number)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void checkAccessTest() {
-        int num = randomNumber_1_100();
-        System.out.println("Проверка чисел на больше 18: " + num);
-        if (checkAccess(num).equals("Allowed")) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        int number = random.nextInt(-100, 101);
+        String expected = "";
+        if (number > 18)
+            expected = "Allowed";
+        else
+            expected = "Denied";
+        assertThat(checkAccess(number))
+                .as("Не верно сработала проверка на больше 18: " + number)
+                .isEqualTo(expected);
     }
 
 
     @Tag("Test")
-    @RepeatedTest(2)
+    @RepeatedTest(repeatedTest)
     public void isPositiveTest() {
-        int num = randomNumber_minus100_100();
-        System.out.println("Проверка чисел на больше или равно 0: " + num);
-        if (isPositive(num)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
-        }
+        int number = random.nextInt(-100, 101);
+        boolean expected = number > 0;
+        assertThat(isPositive(number))
+                .as("Не верно сработала проверка на позитивность числа: " + number)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void getGradeTest() {
-        int num = randomNumber_minus100_100();
-        System.out.println("Проверка грейда в зависимости от числа: " + num);
-        switch (getGrade(num)) {
-            case "A","B","C","D","E" -> System.out.println("TEST PASSED");
-            default -> System.out.println("TEST FAILED");
-        }
+        int number = random.nextInt(-100, 1000);
+        String expected = "";
+        if (number >= 0 && number <= 20)
+            expected = "E";
+        else if (number >= 21 && number <= 40)
+            expected = "D";
+        else if (number >= 41 && number <= 60)
+            expected = "C";
+        else if (number >= 61 && number <= 80)
+            expected = "B";
+        else if (number >= 81 && number <= 100)
+            expected = "A";
+        else
+            expected = "Error";
+        assertThat(getGrade(number))
+                .as("Не верно определился грейд для числа: " + number)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void blastOffTest() {
-        int num = random.nextInt(0,10);
-        System.out.println("Проверка вывода строчки 5 4 3 2 1 Поехали!: " + num);
-        switch (blastOff(num)) {
-            case "5 4 3 2 1 Поехали!","4 3 2 1 Поехали!","3 2 1 Поехали!","2 1 Поехали!","1 Поехали!" -> System.out.println("TEST PASSED");
-            default -> System.out.println("TEST FAILED");
-        }
+        int number = random.nextInt(0, 6);
+        String expected = "";
+        if (number == 0)
+            expected = "Поехали!";
+        else if (number == 1)
+            expected = "1 Поехали!";
+        else if (number == 2)
+            expected = "2 1 Поехали!";
+        else if (number == 3)
+            expected = "3 2 1 Поехали!";
+        else if (number == 4)
+            expected = "4 3 2 1 Поехали!";
+        else
+            expected = "5 4 3 2 1 Поехали!";
+
+        assertThat(blastOff(number))
+                .as("Не верно составилась строча Поехали! для числа: " + number)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void sumToNTest() {
-        int num = random.nextInt(1,10);
-        System.out.println("Проверка метода возврата суммы всех целых чисел для 1,2,3,4,5: " + num);
-        switch (sumToN(num)) {
-            case 1,3,6,10,15 -> System.out.println("TEST PASSED");
-            default -> System.out.println("TEST FAILED");
+        int number = random.nextInt(1, 10);
+
+        int expected = 0;
+        for (int i = 1; i <= number; i++) {
+            expected = expected + i;
         }
+
+        assertThat(sumToN(number))
+                .as("Не верно посчиталась сумма целых чисел до числа: " + number)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void hasBugTest() {
-        String[] arr = randomStringArr();
-        System.out.println("Проверка наличия bug в массиве " + Arrays.toString(arr));
-        if (hasBug(arr)) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        String[] arr = new String[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = String.valueOf(random.nextInt(1000, 10000));
         }
+        arr[random.nextInt(0,arr.length)] = "bug";
+        boolean expected = false;
+        for (String element : arr) {
+            if (element.equalsIgnoreCase("bug"))
+                expected = true;
+        }
+
+        assertThat(hasBug(arr))
+                .as("Не верно определяется наличие BUG в массиве : " + Arrays.toString(arr))
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void getEvenInRangeTest() {
-        int first = random.nextInt(1,7);
-        int second = first + random.nextInt(2,7);
-        System.out.println("Проверка вывода строки из четных чисел в диапазоне: " + first + " - " + second);
-        if (getEvenInRange(first,second).contains("1") || getEvenInRange(first,second).contains("3")|| getEvenInRange(first,second).contains("5")|| getEvenInRange(first,second).contains("7")|| getEvenInRange(first,second).contains("9")|| getEvenInRange(first,second).contains("11")) {
-            System.out.println("TEST FAILED");
-        } else {
-            System.out.println("TEST PASSED");
+        int first = random.nextInt(1, 7);
+        int second = first + random.nextInt(2, 7);
+        String expected = "";
+
+        for (int i = first; i <= second; i++) {
+            if (i % 2 == 0 && i < second)
+                expected = expected + i + " ";
+            else if (i % 2 == 0 && i == second)
+                expected = expected + i;
         }
+
+        assertThat(getEvenInRange(first, second))
+                .as("Не верно вывелись четные числа для границы: " + first + " " + second)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void findMaxTest() {
-        int[] arr = numbers();
-        System.out.println("Проверка самого большого числа в массиве " + Arrays.toString(arr));
-        if (findMax(arr) == 100) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        int[] arr = new int[10];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt(1, 101);
         }
+        int expected = Integer.MIN_VALUE;
+
+        for (int candidate: arr){
+            if (candidate > expected)
+                expected = candidate;
+        }
+
+        assertThat(findMax(arr))
+                .as("(Специально сломанный метод, Не верно определилось максимальное число в массиве: " + Arrays.toString(arr))
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void reverseTest() {
         String[] arr = randomStringArr();
@@ -207,28 +192,47 @@ public class SecondTest {
         }
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void calcAverageTest() {
-        List<Integer> arr = randomIntList();
-        System.out.println("Проверка средне арифметического " + arr);
-        if (calcAverage(arr) == 10) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        List<Integer> listNumbers = new ArrayList<>();
+        for (int i = 0; i < random.nextInt(10, 20); i++) {
+            listNumbers.add(random.nextInt(1, 101));
         }
+        int summ = 0;
+        for (int element : listNumbers)
+            summ = summ + element;
+        double expected = (double) summ / listNumbers.size();
+
+
+        assertThat(calcAverage(listNumbers))
+                .as("(Не верно определилось среднеарифметическое число у объекта: " + listNumbers)
+                .isEqualTo(expected);
     }
 
-    @Test
+    @RepeatedTest(repeatedTest)
     @Tag("Test")
     public void removeSpecificNameTest() {
-        List<String> arr = randomStringList();
-        System.out.println("Проверка удаление слова BUG из списка " + arr);
-        if (!removeSpecificName(arr,"BUG").contains("BUG")) {
-            System.out.println("TEST PASSED");
-        } else {
-            System.out.println("TEST FAILED");
+        List<String> stringList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            stringList.add(String.valueOf(random.nextInt(100, 10000)));
         }
+
+        String randomStr = String.valueOf(random.nextInt(100, 10000));
+
+        stringList.add(random.nextInt(0, 10), randomStr);
+
+        List<String> expected = new ArrayList<>(stringList);
+        for (int i = 0; i < expected.size(); i++) {
+            if(expected.get(i).equals(randomStr))
+                expected.remove(i);
+
+        }
+
+
+        assertThat(removeSpecificName(stringList,randomStr))
+                .as("(Не верно произошло удаление слова: " + randomStr + " из списка: " + stringList)
+                .isEqualTo(expected);
     }
 
     /*
@@ -268,6 +272,7 @@ public class SecondTest {
         }
         return var2;
     }
+
     /*
         Вспомогательный метод для возврата Листа с рандомными числами"
                 */
@@ -287,7 +292,7 @@ public class SecondTest {
         for (int i = 0; i < 10; i++) {
             stringList.add(String.valueOf(random.nextInt(100, 10000)));
         }
-        stringList.add(random.nextInt(0, 10),"BUG");
+        stringList.add(random.nextInt(0, 10), "BUG");
         return stringList;
     }
 
@@ -296,7 +301,7 @@ public class SecondTest {
     Метод возвращает true, если число чётное, и false — если нечётное.
      */
     public static boolean isEven(int n) {
-        return !(n % 2 > 0);
+        return n % 2 == 0;
     }
 
     /*
@@ -340,7 +345,7 @@ public class SecondTest {
             return "C";
         else if (score >= 61 && score <= 80)
             return "B";
-        else if (score >= 80 && score <= 100)
+        else if (score >= 81 && score <= 100)
             return "A";
         return "Error";
     }
@@ -397,8 +402,10 @@ public class SecondTest {
     public static String getEvenInRange(int start, int end) {
         String result = "";
         for (int i = start; i <= end; i++) {
-            if (i % 2 == 0)
+            if (i % 2 == 0 && i < end)
                 result = result + i + " ";
+            else if (i % 2 == 0 && i == end)
+                result = result + i;
         }
         return result;
     }
@@ -415,7 +422,7 @@ public class SecondTest {
                 max = i;
 
         }
-        return max;
+        return max+1;
     }
 
 /*
