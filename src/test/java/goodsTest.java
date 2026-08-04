@@ -52,26 +52,7 @@ public class goodsTest {
                 .doubleValue();
     }
 
-    @BeforeEach
-    public void setUp() {
-        System.out.println("========================\n" +
-                "\n" +
-                "Test method start");
-        basicRQ = new RequestSpecBuilder()
-                .setBaseUri("http://localhost:8080")
-                .log(LogDetail.ALL)
-                .build();
-
-        basicRQ.auth()
-                .basic("admin", "secret123");
-
-    }
-
-    @AfterEach
-    public void last() {
-        System.out.println("Test method end\n" +
-                "\n" +
-                "========================");
+    public void searchAndDeleteGoods() {
 
         Response response = given()
                 .spec(basicRQ)
@@ -94,6 +75,30 @@ public class goodsTest {
                         .log().all();
             }
         }
+    }
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("========================\n" +
+                "\n" +
+                "Test method start");
+        basicRQ = new RequestSpecBuilder()
+                .setBaseUri("http://localhost:8080")
+                .log(LogDetail.ALL)
+                .build();
+
+        basicRQ.auth()
+                .basic("admin", "secret123");
+
+    }
+
+    @AfterEach
+    public void last() {
+        System.out.println("Test method end\n" +
+                "\n" +
+                "========================");
+
+        searchAndDeleteGoods();
     }
 
     @Test
