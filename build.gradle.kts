@@ -14,6 +14,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:3.27.7")
+    implementation("io.rest-assured:rest-assured:5.5.6")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
 }
 
 tasks.test {
@@ -41,4 +43,14 @@ tasks.register<Test>("runTest") {
 tasks.named("printMassage") {
     dependsOn("runTest")
     dependsOn("clean")
+}
+
+tasks.register<Test>("restAssuredTest") {
+    group = "myTask"
+    useJUnitPlatform {
+        includeTags("RestAssured")
+    }
+    testLogging {
+        showStandardStreams = true
+    }
 }
