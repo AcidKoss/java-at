@@ -21,24 +21,30 @@ import java.util.List;
 public class SeleniumTest {
     WebDriver driver;
 
-    String ligin = "admin";
+    String login = "admin";
     String pass = "secret123";
+    String loginInvalid = "abra";
+    String passInvalid = "cadabra";
 
     By adminButtonMain = By.xpath("//a[@href='/admin']");
     By basketButtonMain = By.xpath("//button[@id='open-cart-btn']");
     By productCardMain = By.xpath("//div[@class='product-card']");
+    By addToBasketMain = By.xpath("//div[@class='product-card']//button[@data-action='add-to-cart']");
 
     By inputLoginSignIn = By.xpath("//input[@id='username']");
     By inputPassSignIn = By.xpath("//input[@id='password']");
     By buttonSignIn = By.xpath("//button[text()='Sign in']");
+    By errorAlertSignIn = By.xpath("//div[@class='alert alert-danger']");
 
     By nameProductAdmin = By.xpath("//input[@id='n-name']");
     By priceProductAdmin = By.xpath("//input[@id='n-price']");
     By buttonCreateAdmin = By.xpath("//button[@id='add-btn']");
     By buttonDeleteAdmin = By.xpath("//button[@data-action='delete']");
+    By tableProductAdmin = By.xpath("//tbody[@id='tbody']");
     By backToMain = By.xpath("//a[@href='/']");
 
-
+    String nameProduct = "Стакан";
+    String priceProduct = "10";
 
     @BeforeEach
     void setup() {
@@ -51,30 +57,85 @@ public class SeleniumTest {
     public void last() {
         driver.get("http://localhost:8080/admin");
         List<WebElement> deleteButtons = driver.findElements(buttonDeleteAdmin);
-        for (WebElement button : deleteButtons) {
-            button.click();
+        for (int i = deleteButtons.size(); i > 0 ; i--) {
+            driver.findElement(buttonDeleteAdmin).click();
             driver.switchTo().alert().accept();
+            driver.findElement(backToMain).isDisplayed();
         }
+//        driver.quit();
     }
 
 
 
     @Test
     @Tag("Selenium")
-    public void Test() {
-        String nameProduct = "Стакан";
-        String priceProduct = "10";
+    public void displayNewProductTest() {
+
         driver.findElement(adminButtonMain).click();
-        driver.findElement(inputLoginSignIn).sendKeys(ligin);
+        driver.findElement(inputLoginSignIn).sendKeys(login);
         driver.findElement(inputPassSignIn).sendKeys(pass);
         driver.findElement(buttonSignIn).click();
         driver.findElement(nameProductAdmin).sendKeys(nameProduct);
         driver.findElement(priceProductAdmin).sendKeys(priceProduct);
         driver.findElement(buttonCreateAdmin).click();
+        driver.findElement(tableProductAdmin).isDisplayed();
         driver.findElement(backToMain).click();
         Assertions.assertThat(driver.findElement(By.xpath("//div[@class='product-card']/h4")).getText())
                 .as("Товар не добавился в админке и не виден в магазине")
                 .isEqualTo(nameProduct);
 
+    }
+
+    @Test
+    @Tag("Selenium")
+    public void addProductInBasketTest() {
+        driver.findElement(adminButtonMain).click();
+        driver.findElement(inputLoginSignIn).sendKeys(login);
+        driver.findElement(inputPassSignIn).sendKeys(pass);
+        driver.findElement(buttonSignIn).click();
+        driver.findElement(nameProductAdmin).sendKeys(nameProduct);
+        driver.findElement(priceProductAdmin).sendKeys(priceProduct);
+        driver.findElement(buttonCreateAdmin).click();
+        driver.findElement(tableProductAdmin).isDisplayed();
+        driver.findElement(backToMain).click();
+        driver.findElement(addToBasketMain).click();
+        driver.findElement(basketButtonMain).click();
+        Assertions.assertThat(driver.findElement(By.xpath("//div[@class='cart-item']//b")).getText())
+                .as("Товар не добавился в корзину")
+                .isEqualTo(nameProduct);
+    }
+
+    @Test
+    @Tag("Selenium")
+    public void invalidLoginPassTest() {
+        driver.findElement(adminButtonMain).click();
+        driver.findElement(inputLoginSignIn).sendKeys(loginInvalid);
+        driver.findElement(inputPassSignIn).sendKeys(passInvalid);
+        driver.findElement(buttonSignIn).click();
+        Assertions.assertThat(driver.findElement(errorAlertSignIn).getText())
+                .as("Не верно сработала проверка на корректность Логина и Пароля")
+                .isEqualTo("Неверные учетные данные пользователя");
+    }
+
+    @Test
+    @Tag("Selenium")
+    public void addProductInBasketRebootPageTest() {
+        driver.findElement(adminButtonMain).click();
+        driver.findElement(inputLoginSignIn).sendKeys(login);
+        driver.findElement(inputPassSignIn).sendKeys(pass);
+        driver.findElement(buttonSignIn).click();
+        driver.findElement(nameProductAdmin).sendKeys(nameProduct);
+        driver.findElement(priceProductAdmin).sendKeys(priceProduct);
+        driver.findElement(buttonCreateAdmin).click();
+        driver.findElement(tableProductAdmin).isDisplayed();
+        driver.findElement(backToMain).click();
+        driver.findElement(addToBasketMain).click();
+        driver.navigate().refresh();
+        driver.findElement(basketButtonMain).click();
+
+        int countProduct = driver.findElements(By.xpath("//div[@class='cart-item']")).size();
+        Assertions.assertThat(countProduct)
+                .as("Товар не сохранился в корзине после обновления страницы")
+                .isPositive();
     }
 }
