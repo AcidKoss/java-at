@@ -62,7 +62,7 @@ public class SeleniumTest {
             driver.switchTo().alert().accept();
             driver.findElement(backToMain).isDisplayed();
         }
-//        driver.quit();
+        driver.quit();
     }
 
 
