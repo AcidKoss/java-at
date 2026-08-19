@@ -1,23 +1,18 @@
-import com.codeborne.selenide.Condition;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static io.restassured.RestAssured.given;
 
 public class SelenideTask2Test {
 
@@ -31,8 +26,6 @@ public class SelenideTask2Test {
     String productCardMain = "//div[@class='product-card']";
     String addToBasketMain = "//div[@class='product-card']//button[@data-action='add-to-cart']";
     String makeOrderMain = "//button[@id='makeOrder']";
-    String totalPriceMain = "//span[@id='total-price']";
-    String toastMain = "//div[@class='toast']";
 
     String inputLoginSignIn = "//input[@id='username']";
     String inputPassSignIn = "//input[@id='password']";
@@ -41,35 +34,20 @@ public class SelenideTask2Test {
 
     String nameProductAdmin = "//input[@id='n-name']";
     String priceProductAdmin = "//input[@id='n-price']";
-    String existsNameProductAdmin = "//tbody[@id='tbody']//input[@type='text']";
-    String existsPriceProductAdmin = "//tbody[@id='tbody']//input[@type='number']";
 
     String buttonCreateAdmin = "//button[@id='add-btn']";
     String buttonDeleteAdmin = "//button[@data-action='delete']";
-    String buttonUpdateAdmin = "//button[@data-action='update']";
     String tableProductAdmin = "//tbody[@id='tbody']";
     String backToMain = "//a[@href='/']";
 
     String nameProduct = "Стакан";
     String priceProduct = "99";
-    String nameProduct1 = "Кружка";
-    String priceProduct1 = "54";
 
-    private RequestSpecification basicRQ;
 
-    public record Request(String name, Double price) {
-    }
 
     @BeforeEach
     void setup() {
         Selenide.open("http://localhost:8080");
-        basicRQ = new RequestSpecBuilder()
-                .setBaseUri("http://localhost:8080")
-                .log(LogDetail.ALL)
-                .build();
-
-        basicRQ.auth()
-                .basic("admin", "secret123");
     }
 
     @AfterEach
@@ -84,9 +62,6 @@ public class SelenideTask2Test {
             $x(backToMain).should(visible);
             sleep(500);
         }
-//        driver.quit();
-
-
     }
 
     //Добавить товар через админку, выйти на витрину и проверить, что товар отображается.

@@ -1,4 +1,4 @@
-import com.codeborne.selenide.Condition;
+
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static io.restassured.RestAssured.given;
 
@@ -20,8 +21,6 @@ public class SelenideTask3Test {
 
     String login = "admin";
     String pass = "secret123";
-    String loginInvalid = "abra";
-    String passInvalid = "cadabra";
 
     String adminButtonMain = "//a[@href='/admin']";
     String basketButtonMain = "//button[@id='open-cart-btn']";
@@ -34,12 +33,10 @@ public class SelenideTask3Test {
     String inputLoginSignIn = "//input[@id='username']";
     String inputPassSignIn = "//input[@id='password']";
     String buttonSignIn = "//button[text()='Sign in']";
-    String errorAlertSignIn = "//div[@class='alert alert-danger']";
 
     String nameProductAdmin = "//input[@id='n-name']";
     String priceProductAdmin = "//input[@id='n-price']";
     String existsNameProductAdmin = "//tbody[@id='tbody']//input[@type='text']";
-    String existsPriceProductAdmin = "//tbody[@id='tbody']//input[@type='number']";
 
     String buttonCreateAdmin = "//button[@id='add-btn']";
     String buttonDeleteAdmin = "//button[@data-action='delete']";
@@ -78,12 +75,13 @@ public class SelenideTask3Test {
         for (int i = deleteButtons.size(); i > 0 ; i--) {
             deleteButtons.first().click();
             Selenide.switchTo().alert().accept();
-            $x(backToMain).should(Condition.visible);
+            $x(backToMain).should(visible);
             sleep(500);
         }
     }
 
 
+    //Добавить три единицы товара в корзину и оплатить их (общая стоимость не должна превышать 300 рублей). Проверить уведомление об обработке заказа.
     @Test
     @Tag("Selenide")
     public void notificOrderProcessTest() {
@@ -94,7 +92,7 @@ public class SelenideTask3Test {
         $x(nameProductAdmin).sendKeys(nameProduct);
         $x(priceProductAdmin).sendKeys(priceProduct);
         $x(buttonCreateAdmin).click();
-        $x(tableProductAdmin).should(Condition.visible);
+        $x(tableProductAdmin).should(visible);
         $x(backToMain).click();
         for (int i = 0; i < 3 ; i++) {
             $x(addToBasketMain).click();
@@ -104,11 +102,15 @@ public class SelenideTask3Test {
 
         ElementsCollection allToast = $$x(toastMain);
 
+        allToast.last().should(text("Заказ принят в обработку!"));
+        allToast.last().should(visible);
+
         Assertions.assertThat(allToast.last().getText())
                 .as("Не сработала проверка на успешное создание заказа")
                 .isEqualTo("Заказ принят в обработку!");
     }
 
+    //Добавить в корзину несколько разных товаров и проверить, что общая цена в корзине считается корректно.
     @Test
     @Tag("Selenide")
     public void totalPriceBasketTest() {
@@ -119,11 +121,11 @@ public class SelenideTask3Test {
         $x(nameProductAdmin).sendKeys(nameProduct);
         $x(priceProductAdmin).sendKeys(priceProduct);
         $x(buttonCreateAdmin).click();
-        $x(tableProductAdmin).should(Condition.visible);
+        $x(tableProductAdmin).should(visible);
         $x(nameProductAdmin).sendKeys(nameProduct1);
         $x(priceProductAdmin).sendKeys(priceProduct1);
         $x(buttonCreateAdmin).click();
-        $x(tableProductAdmin).should(Condition.visible);
+        $x(tableProductAdmin).should(visible);
         $x(backToMain).click();
         ElementsCollection allButtonToBasket = $$x(addToBasketMain);
         for (SelenideElement button: allButtonToBasket){
@@ -131,11 +133,15 @@ public class SelenideTask3Test {
         }
         $x(basketButtonMain).click();
 
-        Assertions.assertThat($x(totalPriceMain).getText())
+        SelenideElement totalPrice = $x(totalPriceMain);
+        totalPrice.should(visible).should(text("153"));
+
+        Assertions.assertThat(totalPrice.getText())
                 .as("Не сработала проверка на общую сумму")
                 .isEqualTo("153");
     }
 
+    //Войти в админку и добавить товар. Проверить уведомление после добавления товара.
     @Test
     @Tag("Selenide")
     public void notificAddProductInAdminTest() {
@@ -149,11 +155,14 @@ public class SelenideTask3Test {
 
         ElementsCollection allToast = $$x(toastMain);
 
+        allToast.last().should(visible).should(text("Товар успешно добавлен!"));
+
         Assertions.assertThat(allToast.last().getText())
                 .as("Не сработала проверка на успешное создание товара")
                 .isEqualTo("Товар успешно добавлен!");
     }
 
+    //Войти в админку и отредактировать товар. Выйти на список товаров и проверить, что изменения применились.
     @Test
     @Tag("Selenide")
     public void editProductInAdminTest() {
@@ -161,14 +170,12 @@ public class SelenideTask3Test {
         Response response = given()
                 .spec(basicRQ)
                 .contentType(ContentType.JSON)
-                .body(new goodsTest.Request("Ручка", 45.0))
+                .body(new Request("Ручка", 45.0))
                 .post("/goods/add")
                 .then()
                 .log().all()
                 .extract().response();
         Selenide.open("http://localhost:8080");
-
-        String productName = $x(productCardMain).getAttribute("data-name");
 
         $x(adminButtonMain).click();
         $x(inputLoginSignIn).sendKeys(login);
@@ -179,7 +186,11 @@ public class SelenideTask3Test {
         $x(buttonCreateAdmin).click();
         $x(backToMain).click();
 
-        Assertions.assertThat($x(productCardMain).getAttribute("data-name"))
+        SelenideElement productCard = $x(productCardMain);
+
+        productCard.should(visible).should(text("РучкаNEW"));
+
+        Assertions.assertThat(productCard.getAttribute("data-name"))
                 .as("Не сработала проверка на редактирование товара товара")
                 .isEqualTo("РучкаNEW");
     }
