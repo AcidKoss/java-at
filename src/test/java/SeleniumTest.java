@@ -80,9 +80,13 @@ public class SeleniumTest {
         driver.findElement(buttonCreateAdmin).click();
         driver.findElement(tableProductAdmin).isDisplayed();
         driver.findElement(backToMain).click();
-        Assertions.assertThat(driver.findElement(By.xpath("//div[@class='product-card']/h4")).getText())
+        WebElement product = driver.findElement(By.xpath("//div[@class='product-card']/h4"));
+        Assertions.assertThat(product.getText())
                 .as("Товар не добавился в админке и не виден в магазине")
                 .isEqualTo(nameProduct);
+        Assertions.assertThat(product.isDisplayed())
+                .as("Товар не отображается в магазине")
+                .isTrue();
 
     }
 

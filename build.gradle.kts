@@ -17,7 +17,7 @@ dependencies {
     implementation("io.rest-assured:rest-assured:5.5.6")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     implementation("org.seleniumhq.selenium:selenium-java:4.46.0")
-    implementation("com.codeborne:selenide:7.16.0")
+    implementation("com.codeborne:selenide:7.17.0")
 
 }
 
