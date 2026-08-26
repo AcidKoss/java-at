@@ -16,6 +16,9 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.27.7")
     implementation("io.rest-assured:rest-assured:5.5.6")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+    implementation("org.seleniumhq.selenium:selenium-java:4.46.0")
+    implementation("com.codeborne:selenide:7.17.0")
+
 }
 
 tasks.test {
@@ -49,6 +52,26 @@ tasks.register<Test>("restAssuredTest") {
     group = "myTask"
     useJUnitPlatform {
         includeTags("RestAssured")
+    }
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+tasks.register<Test>("seleniumTest") {
+    group = "myTask"
+    useJUnitPlatform {
+        includeTags("Selenium")
+    }
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+tasks.register<Test>("selenideTest") {
+    group = "myTask"
+    useJUnitPlatform {
+        includeTags("Selenide")
     }
     testLogging {
         showStandardStreams = true
