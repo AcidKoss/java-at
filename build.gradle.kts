@@ -18,6 +18,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
     implementation("org.seleniumhq.selenium:selenium-java:4.46.0")
     implementation("com.codeborne:selenide:7.17.0")
+    implementation("org.aeonbits.owner:owner:1.0.12")
 
 }
 
@@ -72,6 +73,16 @@ tasks.register<Test>("selenideTest") {
     group = "myTask"
     useJUnitPlatform {
         includeTags("Selenide")
+    }
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+tasks.register<Test>("aeonbitsTest") {
+    group = "myTask"
+    useJUnitPlatform {
+        includeTags("Aeonbits")
     }
     testLogging {
         showStandardStreams = true
